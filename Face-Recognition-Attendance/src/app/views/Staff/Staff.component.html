@@ -1,0 +1,718 @@
+<div class="animated fadeIn">
+    <!--/.row-->
+    <div class="row">
+      <div class="col-lg-12">
+        
+        <div class="card">
+          <!-- <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="this.openModal(newStd)">Add New Student</button> -->
+
+          <div class="card-header">
+
+              <div class="headerContainer">
+
+                <div class="row">
+                  <div class="col-md-4">
+
+                    <mat-form-field appearance="fill" class="searchField">
+                      <mat-label>
+                        Search
+                      </mat-label>
+                      <input
+                        matInput
+                        [(ngModel)]="this.searchQuery"
+                        type="text"
+                        name="searchQuery"
+                        (keyup)="this.runSearch($event.keyCode)"
+                        style="color:white; font-weight:bold"
+                      />
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" (click)="applySearch()" > <i class="fas fa-search btnIcon" aria-hidden="true"></i>
+                      Search
+                    </button>
+                    
+                    
+                  </div>
+
+                  <div class="col-md-4">
+          <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" (click)="this.openModal(newStd)">  <i class="fa fa-plus btnIcon" aria-hidden="true"></i>Add New Student</button>
+                  </div>
+                    
+                </div>
+
+            </div>
+
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped table-sm">
+              <thead>
+                <tr>
+                  <th span="1" style="width: 23%">Username</th>
+                  <th span="1" style="width: 23%" >Name</th>
+                  <th span="1" style="width: 23%">Surname</th>
+                  <th span="1" style="width: 16%">Students Count</th>
+                  <th span="1" style="width: 16%">Options</th>
+                </tr>
+              </thead>
+              <tbody>
+               <tr *ngFor="let std of this.staffList">
+                <td> {{std.username}} </td>
+                <td> {{std.name}} </td>
+                <td> {{std.surname}} </td>
+                <td> {{std.students.length}} </td>
+                <!-- <td> 0 </td> -->
+                <td> 
+                  <div ngbDropdown class="d-inline-block" placement="bottom-right">
+                  <button 
+                    class="btn btn-outline-primary"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle
+                  >
+                    {{"Options"  }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button
+                      ngbDropdownItem
+                     (click)="this.openModal(updateStd,std)"
+                    >
+                      <i class="far fa-edit fixed-width"></i> Details
+                    </button>
+                    <button
+                      ngbDropdownItem
+                      (click)="this.openModal(stdDetails,std)"
+                      >
+                      <i class="fas fa-address-book fixed-width"></i> Show Students
+                    </button>
+
+                    
+                    <button
+                      ngbDropdownItem
+                      (click)="this.openModal(updatePassword,std)"
+                      >
+                      <i class="fas fa-key fixed-width"></i> Change Password
+                    </button>
+
+
+                    <button 
+                    ngbDropdownItem 
+                    (click)="this.openDeleteModal(delete,std)"
+                    >
+                      <i class="fas fa-trash-alt fixed-width"></i> Delete
+                    </button>
+                  </div>
+                </div> 
+              </td>
+               </tr>
+                
+                
+              </tbody>
+            </table>
+          
+            
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+  </div>
+  
+
+
+
+
+
+
+<!-- new user modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #newStd let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New Staff</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #newUserForm="ngForm">
+          <div class="row">
+         
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Username</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="username"
+                    [(ngModel)]="this.modalObj.username"
+                    name="username"
+                    #username="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="username.invalid && username.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label> Password</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="password"
+                    [(ngModel)]="this.modalObj.password"
+                    name="password"
+                    #password="ngModel"
+
+                    required
+                  />
+                  <mat-error *ngIf="password.invalid && password.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+             
+              
+            </div>
+
+
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="name"
+                    [(ngModel)]="this.modalObj.name"
+                    name="name"
+                    #name="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="name.invalid && name.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Surname</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="surename"
+                    [(ngModel)]="this.modalObj.surname"
+                    name="surename"
+                    #surename="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="surename.invalid && surename.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+
+            
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="newUserSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="newUserFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="newUserForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="addNew()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+<!-- update user modal-->
+
+<div class="example-preview">
+  <div>
+    <ng-template #updateStd let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Staff</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateUserForm="ngForm">
+          <div class="row">
+         
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="name"
+                    [(ngModel)]="this.modalObjUpdate.name"
+                    name="name"
+                    #name="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="name.invalid && name.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label> Surname</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="surname"
+                    [(ngModel)]="this.modalObjUpdate.surname"
+                    name="surname"
+                    #surname="ngModel"
+
+                    required
+                  />
+                  <mat-error *ngIf="surname.invalid && surname.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+             
+              
+            </div>
+
+
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Username</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="username"
+                    [(ngModel)]="this.modalObjUpdate.username"
+                    name="username"
+                    #username="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="username.invalid && username.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+                
+                
+              </div>
+
+            
+
+            
+            </div>
+
+
+
+
+
+
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="newUserSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="newUserFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="updateUserForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="update()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+<!-- update password modal-->
+
+<div class="example-preview">
+  <div>
+    <ng-template #updatePassword let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Password</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateUserForm="ngForm">
+          <div class="row">
+         
+            
+
+            <div class="col-xl-12">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Password</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="username"
+                    [(ngModel)]="this.modalObjUpdate.password"
+                    name="username"
+                    #username="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="username.invalid && username.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+                
+                
+              </div>
+
+            
+
+            
+            </div>
+
+
+
+
+
+
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="newUserSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="newUserFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="updateUserForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="this.updatePasswordForStaff()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+<!-- delete Modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #delete let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Student : {{ modalTitle }}</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Are you sure you want to delete Student :
+        {{ this.modalTitle }}?
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+           Your changes have been submitted successfully.
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark modalBtn"
+          (click)="c('Close click')"
+        >
+      Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-outline-primary modalBtn"
+          (click)="deleteStudent()"
+        >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- End of delete Modal-->
+
+
+  <!-- students Details modal -->
+
+  <div class="example-preview">
+    <div>
+      <ng-template #stdDetails let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <h4 class="modal-title"> </h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow:hidden">
+          <form #newUserForm="ngForm">
+
+
+         
+            <div class="detailsBodyContaier">
+
+
+
+
+
+
+
+
+                <div class="animated fadeIn">
+                    <!--/.row-->
+                    <div class="row">
+                      <div class="col-lg-12">
+                        
+                        <div class="card">
+                
+
+                          <table class="table table-bordered table-striped table-sm">
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Surname</th>
+                                  <th>Student number</th>
+                                  <th>Confirmed</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                               <tr *ngFor="let std of this.modalObjUpdate.students">
+                                <td> {{std.name}} </td>
+                                <td> {{std.surname}} </td>
+                                <td> {{std.studentNumber}} </td>
+                                <td> 
+                                  <i
+                                  [ngClass]="{
+                                    'fa fa-check-circle ': std.confirmed,
+                                    'far fa-times-circle ': !std.confirmed
+                                  }"
+                                  aria-hidden="true"
+                                ></i>   </td>
+
+                             
+                               </tr>
+                                
+                              </tbody>
+                            </table>
+                        </div>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                  </div>
+
+
+
+
+
+
+
+            </div>
+          
+  
+  
+  
+  
+            
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <div class="alert-container">
+            <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+              Your changes have been submitted successfully
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+              Error Occured, please try again later
+            </div>
+          </div>
+          <div class="row">
+          <button
+          style="margin: 7px;"
+            class="modalBtn"
+            type="button"
+            class="btn btn-outline-dark btnPadding"
+            (click)="c('Close click')"
+          >
+      Close
+          </button>
+          
+          
+          <button
+          style="margin: 7px;"
+          class="modalBtn"
+          type="submit"
+            [disabled]="
+              newUserForm.invalid 
+            "
+            class="btn btn-outline-primary btnPadding"
+            (click)="update()"
+          >
+            <span
+              class="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.isLoading"
+            ></span
+            >Submit Changes
+          </button>
+          </div>
+        </div> -->
+      </ng-template>
+    </div>
+  </div>
+  

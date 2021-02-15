@@ -1,0 +1,202 @@
+   
+  <div class="card" id="card" style="top:10px;">
+
+
+    <div class="card-header">
+
+        <div class="headerContainer">
+
+          <div class="row">
+
+
+              <div class="col-md-3">
+
+                <mat-form-field appearance="fill" class="searchField">
+                    <mat-label>
+                      Student Number
+                    </mat-label>
+                    <input
+                      matInput
+                      [(ngModel)]="this.idToLoad"
+                      type="text"
+                      name="searchQuery"
+                      (keyup)="this.runSearch($event.keyCode)"
+                      style="color:#20a8d8; font-weight:bold"
+                    />
+                  </mat-form-field>
+
+              </div>
+
+
+            <div class="col-md-3">
+              <mat-form-field appearance="fill" class="searchField">
+                <mat-label>
+                  Student Code
+                </mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="this.studentCode"
+                  type="text"
+                  name="studentCode"
+                  (keyup)="this.runSearch($event.keyCode)"
+                  style="color:#20a8d8; font-weight:bold"
+                />
+              </mat-form-field>
+
+            </div>
+
+            <div class="col-md-3">
+             
+                <button  type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" 
+                (click)="this.loadSignleStudent()" style="width: 100%;">
+                    Load
+                </button> 
+
+            </div>
+
+            <div class="col-md-3">
+             
+                
+            </div>
+              
+          </div>
+
+      </div>
+
+    </div>
+
+    
+  
+  
+    
+    <!-- images div -->
+  
+  
+    <div *ngIf="uploaderReady" class="row">
+  
+  
+  
+  
+    <!-- photo - 1 -->
+    <div class="col-xl-4">
+  
+      <div  class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length>=1">
+          <img src="{{this.modalObjUpdate.photos[0].url}}" class="imgStyle">
+          <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload1 />
+          <button type="button" (click)="this.deletePhoto(this.modalObjUpdate.photos[0].id)"
+           class="btn btn-lg btn-danger"><i class="fas fa-trash"></i></button>
+      </div>
+  
+      <div class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length<1">
+       
+        <img src="../../../assets/user.png"  class="imgStyle">
+        <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload1 />
+        <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload1.click()"><i class="fas fa-upload"></i></button>  
+        <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="openModalPhoto(camPhoto,this.modalObjUpdate)"><i class="fas fa-camera"></i></button>      
+  
+    </div>
+  </div>
+  
+  
+  
+    <!-- photo - 2 -->
+  <div class="col-xl-4">
+  
+    <div  class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length>=2">
+        <img src="{{this.modalObjUpdate.photos[1].url}}" class="imgStyle">
+        <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload2 />
+        <button type="button" (click)="this.deletePhoto(this.modalObjUpdate.photos[1].id)" 
+        class="btn btn-lg btn-danger"><i class="fas fa-trash"></i></button>
+    </div>
+  
+    <div class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length<2">
+     
+      <img src="../../../assets/user.png"  class="imgStyle">
+      <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload2 />
+      <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload2.click()"><i class="fas fa-upload"></i></button>
+      <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="openModalPhoto(camPhoto,this.modalObjUpdate)"><i class="fas fa-camera"></i></button>             
+  
+  </div>
+  </div>
+  
+  
+  <!-- photo - 3 -->
+  <div class="col-xl-4">
+  
+  <div  class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length>=3">
+      <img src="{{this.modalObjUpdate.photos[2].url}}" class="imgStyle">
+      <input type="file" (change)="onFileSelect($event)" accept="image/*"  style="display:none"  #upload3 />
+      <button type="button" (click)="this.deletePhoto(this.modalObjUpdate.photos[2].id)" 
+      class="btn btn-lg btn-danger"><i class="fas fa-trash"></i></button>
+  </div>
+  
+  <div class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length<3">
+   
+    <img src="../../../assets/user.png"  class="imgStyle">
+    <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload3 />
+    <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload3.click()"><i class="fas fa-upload"></i></button>
+    <button type="button" style="margin-left: s5px;" class="btn btn-lg btn-primary"(click)="openModalPhoto(camPhoto,this.modalObjUpdate)"><i class="fas fa-camera"></i></button>             
+  
+  </div>
+  </div>
+  
+  
+  
+     </div>
+
+
+  </div>
+  
+  
+  
+ 
+
+
+
+
+
+
+
+
+
+
+
+   
+  <!-- cam Picture modal -->
+
+  <div class="example-preview">
+    <div>
+      <ng-template #camPhoto let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <h4 class="modal-title">Student : {{ this.modalObjUpdate.name }}  {{ this.modalObjUpdate.surname }}</h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+      
+            <app-camPhotoForPublic
+            [student]="this.modalObjUpdate">
+
+            </app-camPhotoForPublic>
+
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+          <button
+            type="button"
+            class="btn btn-outline-dark modalBtn"
+            (click)="c('Close click')"
+          >
+        Close
+          </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>

@@ -1,0 +1,55 @@
+  <app-header
+  [navbarBrandRouterLink]="['/studentsList']"
+  [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="'lg'">
+  
+  <ul class="nav navbar-nav ml-auto">
+    
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <img src="assets/img/avatars/9.jpg" class="img-avatar" />
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        
+        <a class="dropdown-item" (click)="this.logout()" ><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+
+<div class="app-body">
+    <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+      <app-sidebar-nav [navItems]="navItemsUpdated" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+      <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <!-- breaking change 'cui-breadcrumb' -->
+    <cui-breadcrumb>
+      <!-- Breadcrumb Menu-->
+      <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+        </div>
+      </li>
+    </cui-breadcrumb>
+    
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div><!-- /.container-fluid -->
+  </main>
+  
+</div>
+<app-footer>
+  
+</app-footer>
+
+
+
+<!-- <div *ngIf="!this.authService.loggedIn()">
+  
+</div> -->

@@ -1,0 +1,326 @@
+<div class="animated fadeIn">
+    <!--/.row-->
+    <div class="row">
+      <div class="col-lg-12">
+        
+        <div class="card">
+          <!-- <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="this.openModal(newStd)">Add New Student</button> -->
+
+          <div class="card-header">
+            <!-- <i class="fa fa-align-justify" ></i> List Of Students -->
+
+            <div class="headerContainer">
+
+                <div class="row">
+
+
+                  <div class="col-xl-3">
+                    <mat-form-field appearance="fill" class="logs-header">
+                      <mat-label> Select Course</mat-label>
+            
+                      <mat-select
+                        placeholder="Pick Log Type"
+                        [(ngModel)]="selectedCourse"
+                        (selectionChange)="loadSchedulesForCourse()"
+                      >
+                        <!-- <mat-option *ngFor="let c of this.coursesList"  value=""> All </mat-option> -->
+                        <mat-option *ngFor="let c of this.coursesList"   value="{{c.id}}">
+                          {{c.courseCode}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+
+
+                    <!-- Select Course
+                    <div class="col-md-4">
+                        <div style="width: 80%; ">
+              
+                            <select [(ngModel)]="selectedCourse"
+                            (ngModelChange)="loadSchedulesForCourse()"
+                            placeholder="Courses">
+                              <option *ngFor="let c of this.coursesList" [ngValue]="c.id">
+                                {{c.courseCode}}</option>
+                                
+                            </select>
+                          </div>
+                    </div> -->
+                    
+                </div>
+
+            </div>
+
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Course Code</th>
+                  <th>Course Name</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+               <tr *ngFor="let schedule of this.scheduleList">
+                <td> {{schedule.courseCode}} </td>
+                <td> {{schedule.courseName}} </td>
+                <td> {{schedule.date | date:'shortDate'}} </td>
+                <td> {{schedule.date | date: "shortTime"}} </td>
+                <td> 
+                  <div ngbDropdown class="d-inline-block" placement="bottom-right">
+                  <button
+                    class="btn btn-outline-primary"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle
+                  >
+                    {{"Options"  }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button
+                      ngbDropdownItem
+                     (click)="this.openScheduleDetails(attendanceDetails,schedule)"
+                    >
+                      <i class="far fa-edit fixed-width"></i> {{"Attendance Details"  }}
+                    </button>
+                  </div>
+                </div> 
+              </td>
+               </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+  <!-- attendance Details modal -->
+
+  <div class="example-preview">
+    <div>
+      <ng-template #attendanceDetails let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <div class="col-xl-3">
+            <mat-form-field appearance="fill" class="">
+              <mat-label>Date</mat-label>
+              <input
+                matInput
+                [(ngModel)]="this.date"  
+                placeholder="From"
+                type="date"
+              />
+            </mat-form-field>
+          </div>
+         
+          <div class="col-xl-3">
+            <button
+            style="width: 100%; height: 80%; margin-top: 5px;"
+              class="modalBtn"
+              type="button"
+              class="btn btn-outline-dark btnPadding"
+              (click)="this.attendaceUpdateDate()"
+            >
+            <i class="fas fa-search btnIcon" aria-hidden="true"></i> Search
+            </button>
+          </div> 
+          
+
+          <div class="col-xl-3">
+            <button
+            style="width: 100%; height: 80%; margin-top: 5px;"
+              class="modalBtn"
+              type="button"
+              class="btn btn-outline-dark btnPadding"
+              (click)="exportexcel()"
+            >
+            <i class="fas fa-file-export" aria-hidden="true"></i> Export to Excel
+            </button>
+          </div> 
+
+          <h4 class="modal-title"> 
+            
+            
+
+          </h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow:hidden">
+          <form #newUserForm="ngForm">
+
+
+         
+            <div class="detailsBodyContaier">
+
+
+
+
+
+
+
+
+                <div class="animated fadeIn">
+                    <!--/.row-->
+                    <div class="row">
+                      <div class="col-lg-12">
+                        
+                        <div class="card">
+                
+                          <div class="card-header">
+                
+                            <div class="headerContainer">
+                
+                                <div class="row">
+                                    
+                                    
+                                </div>
+                
+                            </div>
+                
+                          </div>
+                          <div class="card-body">
+
+                            <table class="table table-bordered table-striped table-sm"  >
+                              <thead>
+                                <tr>
+                                  <th>studentName</th>
+                                  <th>studentSurname</th>
+                                  <th>studentNumber</th>
+                                  <th>attended</th>
+                                  <th>Options</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                               <tr *ngFor="let attend of this.attendanceToDisplay">
+                                <td> {{attend.studentName}} </td>
+                                <td> {{attend.studentSurname}} </td>
+                                <td> {{attend.studentNumber}} </td>
+                                <td> 
+                                  <i
+                                  [ngClass]="{
+                                    'fa fa-check-circle ': attend.attended,
+                                    'far fa-times-circle ': !attend.attended
+                                  }"
+                                  aria-hidden="true"
+                                ></i>  </td>
+                                <td > 
+                                  <i class="fas fa-exchange-alt" (click)="toggleAttendance(attend)"></i>
+                                  <!-- <button type="button" class="btn btn-outline-primary btn-lg btn-block attDetailsBtn" (click)="toggleAttendance(attend)" >Toggle</button> -->
+                                  <!-- <button (click)="toggleAttendance(attend)"> Change Attendance</button>  -->
+                                </td>
+                             
+                               </tr>
+                                
+                              </tbody>
+                            </table>
+
+
+                            <table class="table table-bordered table-striped table-sm"  id="excel-table" style="display: none;">
+                              <thead>
+                                <tr>
+                                  <th>studentName</th>
+                                  <th>studentSurname</th>
+                                  <th>studentNumber</th>
+                                  <th>attended</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                               <tr *ngFor="let attend of this.attendanceToDisplay">
+                                <td> {{attend.studentName}} </td>
+                                <td> {{attend.studentSurname}} </td>
+                                <td> {{attend.studentNumber}} </td>
+                                <td>  {{attend.attended}}  </td>
+                               </tr>
+                                
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                  </div>
+
+
+
+
+
+
+
+            </div>
+          
+  
+  
+  
+  
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="alert-container">
+            <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+              Your changes have been submitted successfully
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+              Error Occured, please try again later
+            </div>
+          </div>
+          <div class="row">
+          <button
+          style="margin: 7px;"
+            class="modalBtn"
+            type="button"
+            class="btn btn-outline-dark btnPadding"
+            (click)="c('Close click')"
+          >
+      Close
+          </button>
+          
+          
+          <button
+          style="margin: 7px;"
+          class="modalBtn"
+          type="submit"
+            [disabled]="
+              newUserForm.invalid 
+            "
+            class="btn btn-outline-primary btnPadding"
+            (click)="update()"
+          >
+            <span
+              class="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.isLoading"
+            ></span
+            >Submit Changes
+          </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  

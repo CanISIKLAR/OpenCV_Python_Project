@@ -1,0 +1,22 @@
+.imgContainer{
+    margin: 10px;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #20a8d8 !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #20a8d8 !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: #20a8d8 !important;;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }

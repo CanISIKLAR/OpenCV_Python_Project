@@ -1,0 +1,20 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+
+// If you want to add something do it here
+@import "custom";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+// @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// @import "../node_modules/font-awesome/css/font-awesome.css";
+// @import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+
+// fix the problem of dropdown not visible in modals
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 10000 !important;
+    }

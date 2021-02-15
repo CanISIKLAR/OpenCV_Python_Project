@@ -1,0 +1,844 @@
+<div class="animated fadeIn">
+    <!--/.row-->
+    <div class="row">
+      <div class="col-lg-12">
+        
+        <div class="card">
+          <!-- <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="this.openModal(newStd)">Add New Student</button> -->
+
+          <div class="card-header">
+
+              <div class="headerContainer">
+
+                <div class="row">
+                  <div class="col-md-4">
+
+                    <mat-form-field appearance="fill" class="searchField">
+                      <mat-label>
+                        Search
+                      </mat-label>
+                      <input
+                        matInput
+                        [(ngModel)]="this.searchQuery"
+                        type="text"
+                        name="searchQuery"
+                        (keyup)="this.runSearch($event.keyCode)"
+                        style="color:white; font-weight:bold"
+                      />
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" (click)="applySearch()" > <i class="fas fa-search btnIcon" aria-hidden="true"></i>
+                      Search
+                    </button>
+                    
+                    
+                  </div>
+
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" (click)="this.openModal(newStd)">  <i class="fa fa-plus btnIcon" aria-hidden="true"></i>Add New Student</button>
+                  </div>
+                    
+                </div>
+
+            </div>
+
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped table-sm">
+              <thead>
+                <tr>
+                  <th span="1" style="width: 23%" >Name</th>
+                  <th span="1" style="width: 23%">Surename</th>
+                  <th span="1" style="width: 23%">Student ID</th>
+                  <th span="1" style="width: 16%">Confirmed</th>
+                  <th span="1" style="width: 16%">Options</th>
+                </tr>
+              </thead>
+              <tbody>
+               <tr *ngFor="let std of this.stdList">
+                <td> {{std.name}} </td>
+                <td> {{std.surname}} </td>
+                <td> {{std.studentNumber}} </td>
+                <td> 
+                  <!-- {{std.confirmed}} -->
+                  <i
+                  [ngClass]="{
+                    'fa fa-check-circle ': std.confirmed,
+                    'far fa-times-circle ': !std.confirmed
+                  }"
+                  aria-hidden="true"
+                ></i>  
+                </td>
+                <td> 
+                  <div ngbDropdown class="d-inline-block" placement="bottom-right">
+                  <button 
+                    class="btn btn-outline-primary"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle
+                  >
+                    {{"Options"  }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button
+                      ngbDropdownItem
+                     (click)="this.openModal(updateStd,std)"
+                    >
+                      <i class="far fa-edit fixed-width"></i> {{"Details"  }}
+                    </button>
+                    <button
+                      ngbDropdownItem
+                      (click)="this.openAttendanceModal(attendanceDetails,std)"
+                    >
+                      <i class="fas fa-address-book fixed-width"></i> {{"Show Attendance"  }}
+                    </button>
+                    <button 
+                    ngbDropdownItem 
+                    (click)="this.openDeleteModal(delete,std)"
+                    >
+                      <i class="fas fa-trash-alt fixed-width"></i> {{"Delete"  }}
+                    </button>
+                  </div>
+                </div> 
+              </td>
+               </tr>
+                
+                
+              </tbody>
+            </table>
+            <!-- <nav>
+              <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                <li class="page-item active">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              </ul>
+            </nav> -->
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+  </div>
+  
+
+
+
+
+
+
+<!-- new user modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #newStd let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New Student</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #newUserForm="ngForm">
+          <div class="row">
+         
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="name"
+                    [(ngModel)]="this.modalObj.name"
+                    name="name"
+                    #name="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="name.invalid && name.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label> Surename</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="surname"
+                    [(ngModel)]="this.modalObj.surname"
+                    name="surname"
+                    #surname="ngModel"
+
+                    required
+                  />
+                  <mat-error *ngIf="surname.invalid && surname.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+             
+              <div class="form-group">
+            
+    
+                <mat-form-field appearance="fill" class="logs-header">
+                  <mat-label> Select Advisor</mat-label>
+        
+                  <mat-select
+                    [(ngModel)]="selectedAdvisor"
+                    name="advisorId"
+                    
+                  >
+  
+                  <mat-option *ngFor="let c of this.staffList"   value="{{c.id}}">
+                      {{c.name}} {{c.surname}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+             
+            </div>
+
+              
+            </div>
+
+
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Student Number</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="studentNumber"
+                    [(ngModel)]="this.modalObj.studentNumber"
+                    name="studentNumber"
+                    #studentNumber="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="studentNumber.invalid && studentNumber.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+                
+                
+              </div>
+
+              <div class="form-group">
+            
+    
+                <ng-multiselect-dropdown
+                name="multi"
+                [placeholder]="'Course List'"
+                [data]="this.coursesList"
+                [(ngModel)]="selectedCourses"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown>
+             
+            </div>
+
+            
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="newUserSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="newUserFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="newUserForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="addNew()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+<!-- update user modal-->
+
+<div class="example-preview">
+  <div>
+    <ng-template #updateStd let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Student</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateUserForm="ngForm">
+          <div class="row">
+         
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="name"
+                    [(ngModel)]="this.modalObjUpdate.name"
+                    name="name"
+                    #name="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="name.invalid && name.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label> Surename</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="surname"
+                    [(ngModel)]="this.modalObjUpdate.surname"
+                    name="surname"
+                    #surname="ngModel"
+
+                    required
+                  />
+                  <mat-error *ngIf="surname.invalid && surname.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+             
+              <div class="form-group">
+            
+    
+                <mat-form-field appearance="fill" class="logs-header">
+                  <mat-label> Select Advisor</mat-label>
+        
+                  <mat-select
+                    [(ngModel)]="selectedAdvisor"
+                    name="advisorId"
+                    
+                  >
+  
+                  <mat-option *ngFor="let c of this.staffList"   value="{{c.id}}">
+                      {{c.name}} {{c.surname}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+             
+            </div>
+              
+            </div>
+
+
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Student Number</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="studentNumber"
+                    [(ngModel)]="this.modalObjUpdate.studentNumber"
+                    name="studentNumber"
+                    #studentNumber="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="studentNumber.invalid && studentNumber.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+                
+                
+              </div>
+
+
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Code</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="studentCode"
+                    [(ngModel)]="this.modalObjUpdate.code"
+                    name="studentCode"
+                    #studentCode="ngModel"
+                    required
+                    disabled
+                  />
+                  <mat-error *ngIf="studentNumber.invalid && studentNumber.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+                
+                
+              </div>
+
+
+
+
+
+              <div class="form-group">
+            
+    
+                <ng-multiselect-dropdown
+                name="multi"
+                [placeholder]="'Course List'"
+                [data]="this.coursesList"
+                [(ngModel)]="selectedCourses"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown>
+             
+            </div>
+
+            
+            </div>
+
+
+
+
+
+
+
+                <!-- photo - 1 -->
+            <div class="col-xl-4">
+
+              <div  class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length>=1">
+                  <img src="{{this.modalObjUpdate.photos[0].url}}" class="imgStyle">
+                  <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload1 />
+                  <!-- <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload1.click()"><i class="fas fa-upload"></i></button>    -->
+                  <button type="button" (click)="this.deletePhoto(this.modalObjUpdate.photos[0].id)"
+                   class="btn btn-lg btn-danger"><i class="fas fa-trash"></i></button>
+              </div>
+
+              <div class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length<1">
+               
+                <img src="../../../assets/user.png"  class="imgStyle">
+                <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload1 />
+                <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload1.click()"><i class="fas fa-upload"></i></button>  
+                <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="openModalPhoto(camPhoto,this.modalObjUpdate)"><i class="fas fa-camera"></i></button>      
+
+            </div>
+          </div>
+
+
+
+            <!-- photo - 2 -->
+          <div class="col-xl-4">
+
+            <div  class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length>=2">
+                <img src="{{this.modalObjUpdate.photos[1].url}}" class="imgStyle">
+                <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload2 />
+              <!-- <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload2.click()"><i class="fas fa-upload"></i></button> -->
+                <button type="button" (click)="this.deletePhoto(this.modalObjUpdate.photos[1].id)" 
+                class="btn btn-lg btn-danger"><i class="fas fa-trash"></i></button>
+            </div>
+
+            <div class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length<2">
+             
+              <img src="../../../assets/user.png"  class="imgStyle">
+              <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload2 />
+              <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload2.click()"><i class="fas fa-upload"></i></button>
+              <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="openModalPhoto(camPhoto,this.modalObjUpdate)"><i class="fas fa-camera"></i></button>             
+
+          </div>
+        </div>
+
+
+          <!-- photo - 3 -->
+        <div class="col-xl-4">
+
+          <div  class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length>=3">
+              <img src="{{this.modalObjUpdate.photos[2].url}}" class="imgStyle">
+              <input type="file" (change)="onFileSelect($event)" accept="image/*"  style="display:none"  #upload3 />
+              <!-- <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload3.click()"><i class="fas fa-upload"></i></button> -->
+              <button type="button" (click)="this.deletePhoto(this.modalObjUpdate.photos[2].id)" 
+              class="btn btn-lg btn-danger"><i class="fas fa-trash"></i></button>
+          </div>
+
+          <div class="form-group imgContainer" *ngIf="this.modalObjUpdate.photos.length<3">
+           
+            <img src="../../../assets/user.png"  class="imgStyle">
+            <input type="file" (change)="onFileSelect($event)" accept="image/*" style="display:none"  #upload3 />
+            <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary" (click)="upload3.click()"><i class="fas fa-upload"></i></button>
+            <button type="button" style="margin-left: 5px;" class="btn btn-lg btn-primary"(click)="openModalPhoto(camPhoto,this.modalObjUpdate)"><i class="fas fa-camera"></i></button>             
+         
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="newUserSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="newUserFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="updateUserForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="update()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+
+<!-- delete Modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #delete let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Student : {{ modalTitle }}</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Are you sure you want to delete Student :
+        {{ this.modalTitle }}?
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+           Your changes have been submitted successfully.
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark modalBtn"
+          (click)="c('Close click')"
+        >
+      Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-outline-primary modalBtn"
+          (click)="deleteStudent()"
+        >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- End of delete Modal-->
+
+
+  <!-- attendance Details modal -->
+
+  <div class="example-preview">
+    <div>
+      <ng-template #attendanceDetails let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <h4 class="modal-title"> </h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow:hidden">
+          <form #newUserForm="ngForm">
+
+
+         
+            <div class="detailsBodyContaier">
+
+
+
+
+
+
+
+
+                <div class="animated fadeIn">
+                    <!--/.row-->
+                    <div class="row">
+                      <div class="col-lg-12">
+                        
+                        <div class="card">
+                
+                          <div class="card-header">
+                
+                            <div class="headerContainer">
+                
+                                <div class="row">
+                                    
+                                    
+                                </div>
+                
+                            </div>
+                
+                          </div>
+                          <div class="card-body">
+                            <table class="table table-bordered table-striped table-sm">
+                              <thead>
+                                <tr>
+                                  <th>Course Code</th>
+                                  <th>Course Name</th>
+                                  <th>Date</th>
+                                  <th>Time</th>
+                                  <th>attended</th>
+                                  <!-- <th>Options</th> -->
+                                </tr>
+                              </thead>
+                              <tbody>
+                               <tr *ngFor="let attend of this.attendanceList">
+                                <td> {{attend.courseCode}}</td>
+                                <td> {{attend.courseName}} </td>
+                                <td> {{attend.date | date:'shortDate'}} </td>
+                                <td> {{attend.date| date:'shortTime'}} </td>
+                                <td> 
+                                  <i
+                                  [ngClass]="{
+                                    'fa fa-check-circle ': attend.attended,
+                                    'far fa-times-circle ': !attend.attended
+                                  }"
+                                  aria-hidden="true"
+                                ></i>   </td>
+
+                             
+                               </tr>
+                                
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                  </div>
+
+
+
+
+
+
+
+            </div>
+          
+  
+  
+  
+  
+            
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <div class="alert-container">
+            <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+              Your changes have been submitted successfully
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+              Error Occured, please try again later
+            </div>
+          </div>
+          <div class="row">
+          <button
+          style="margin: 7px;"
+            class="modalBtn"
+            type="button"
+            class="btn btn-outline-dark btnPadding"
+            (click)="c('Close click')"
+          >
+      Close
+          </button>
+          
+          
+          <button
+          style="margin: 7px;"
+          class="modalBtn"
+          type="submit"
+            [disabled]="
+              newUserForm.invalid 
+            "
+            class="btn btn-outline-primary btnPadding"
+            (click)="update()"
+          >
+            <span
+              class="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.isLoading"
+            ></span
+            >Submit Changes
+          </button>
+          </div>
+        </div> -->
+      </ng-template>
+    </div>
+  </div>
+  
+
+
+  <!-- cam Picture modal -->
+
+  <div class="example-preview">
+    <div>
+      <ng-template #camPhoto let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <h4 class="modal-title">Student : {{ this.modalObjUpdatePhoto.name }}  {{ this.modalObjUpdatePhoto.surname }}</h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+      
+       <app-camPhoto
+       (updateStudentsInParent)="camComponentEmitted($event)"  
+       [student]="this.modalObjUpdatePhoto"
+       [student2]="this.obj2ForCamPhoto">
+       </app-camPhoto>
+
+        </div>
+        <div class="modal-footer">
+          <div class="alert-container">
+            <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+             Your changes have been submitted successfully.
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+              An error occured. Please try again later.
+            </div>
+          </div>
+          <div class="row">
+          <button
+            type="button"
+            class="btn btn-outline-dark modalBtn"
+            (click)="c('Close click')"
+          >
+        Close
+          </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>

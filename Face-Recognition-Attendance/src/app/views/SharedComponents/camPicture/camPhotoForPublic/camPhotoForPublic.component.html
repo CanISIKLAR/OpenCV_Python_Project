@@ -1,0 +1,65 @@
+
+
+  
+     
+    
+    
+    <div style="display: flex; flex:1; align-items: center;">
+
+        <div style="flex:2"></div>
+    
+            <div id="videoContainer" style="flex:4" >
+    
+            <video id="video" width="720" height="560" autoplay muted>
+            <!-- <video id="video" autoplay muted> -->
+            </video>
+    
+            </div>
+
+            <div *ngIf="!workDone">
+
+                <div><button id="startbutton"  (click)="this.takepicture()">Take photo</button></div>
+                <div><button id="startbutton"  [ngClass]="{
+                    'disabledBtn': this.CurrentImage == '' || workDone
+                  }" 
+                    [disabled]="this.CurrentImage == '' || workDone" (click)="this.savePhoto()">Save photo</button></div>
+                
+            </div>
+
+            <div *ngIf="workDone">
+
+                <div><button id="startbutton"  style="background-color: gray;">Take photo</button></div>
+                <div><button id="startbutton"  style="background-color: gray;">Save photo</button></div>
+                
+            </div>
+            
+            <canvas id="canvas"></canvas>
+            <div class="output">
+                <img id="photo" alt="The screen capture will appear in this box.">
+            </div>
+    
+        <div style="flex:2"></div>
+    
+    
+      </div>   
+    
+        <!-- <div class="contentarea">
+            <h1>
+                Using Javascript to capture Photo
+            </h1>
+            <div class="camera">
+                <video id="video">Video stream not available.</video>
+            </div>
+            <div><button id="startbutton">Take photo</button></div>
+            <canvas id="canvas"></canvas>
+            <div class="output">
+                <img id="photo" alt="The screen capture will appear in this box.">
+            </div>
+        </div> -->
+    
+        <!-- <script>
+            
+        (function() {
+            window.addEventListener('load', startup, false);
+        })();
+        </script> -->

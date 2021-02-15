@@ -1,0 +1,431 @@
+<div class="animated fadeIn">
+    <!--/.row-->
+    <div class="row">
+
+      <div class="col-lg-12">
+        <div class="card" id="card">
+          
+          <!-- header starts here -->
+          <div class="card-header">
+
+            <div class="headerContainer">
+
+              <div class="row">
+
+                <div class="col-md-1 countDownContainer">
+
+                  <ng-container *ngIf="this.timer === 0">
+                    <mat-form-field appearance="fill" class="logs-header">
+                      <mat-label> Count Down</mat-label>
+            
+                      <mat-select
+                        [(ngModel)]="countDownCurrent"
+                      >
+                        <!-- <mat-option *ngFor="let c of this.coursesList"  value=""> All </mat-option> -->
+                        <mat-option *ngFor="let c of this.countDownOptions"   value="{{c}}">
+                          {{c}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="this.timer !== 0">
+                    <span class="countDownText"> Count Down : {{returnCount(timer)}} </span> 
+                  </ng-container>
+
+                 
+                </div>
+
+
+                  <div class="col-xl-2">
+                    <mat-form-field appearance="fill" class="logs-header">
+                      <mat-label> Select Course</mat-label>
+            
+                      <mat-select
+                        [(ngModel)]="selectedCourse"
+                      >
+                        <!-- <mat-option *ngFor="let c of this.coursesList"  value=""> All </mat-option> -->
+                        <mat-option *ngFor="let c of this.CoursesList"   value="{{c.id}}">
+                          {{c.courseCode}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" 
+                  [disabled]="!this.loadingFinished || !this.selectedCourse || this.schdeuleSubmit"
+                  (click)="setMatcher()" > 
+                    <i class="fas fa-download btnIcon" aria-hidden="true"></i>
+                    Load images
+                  </button>  
+                </div>
+
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" 
+                  [disabled]="!this.canStartAttendance || this.schdeuleSubmit"
+                  (click)="startAttendance()"   > 
+                    <i class="fas fa-play-circle btnIcon" aria-hidden="true"></i>
+                    Start attendance
+                  </button>  
+                </div>
+
+                <div class="col-md-3">
+                   <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn"
+                   [disabled]="!this.schdeuleSubmit"
+                   (click)="openScheduleDetails(attendanceDetails)"> 
+                     <i class="fas fa-clipboard-list btnIcon" aria-hidden="true"></i>
+                     View schedule</button>
+                </div>
+                  
+              </div>
+
+          </div>
+
+        </div>
+          <!-- end of header -->
+
+          
+           
+
+  <div style="display: flex; flex:1; align-items: center;">
+
+    <div style="flex:2"></div>
+
+        <div id="videoContainer" style="flex:4" *ngIf="!this.schdeuleSubmit">
+
+        <video id="video" width="720" height="560" autoplay muted>
+        <!-- <video id="video" autoplay muted> -->
+        </video>
+
+        </div>
+
+    <div style="flex:2"></div>
+
+
+  </div>          
+
+           
+
+        </div>
+      </div>
+
+    </div>
+    <!--/.row-->
+  </div>
+
+
+
+
+
+  <!-- <div class="animated fadeIn">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card" id="card">
+          
+          
+            <div>faces detected : {{faces}}</div>
+            
+            
+            <div style="max-width: 8%; margin: 15px;">
+              
+              <select [(ngModel)]="selectedCourse" placeholder="Courses">
+                <option *ngFor="let c of CoursesList" [ngValue]="c.id">
+                  {{c.courseCode}}</option>
+                  
+              </select>
+            </div>
+           
+
+            <button style="max-width: 8%; margin: 15px;" (click)="setMatcher()" [disabled]="!this.loadingFinished || !this.selectedCourse" >Load Images </button>
+            <button style="max-width: 8%; margin: 15px;" (click)="startAttendance()" [disabled]="!this.canStartAttendance " > start Attendance </button>
+            <button style="max-width: 8%; margin: 15px;" (click)="stopAttendance()" [disabled]="!this.loadingFinished " > stop Attendance </button>
+
+            <button style="max-width: 8%; margin: 15px;" (click)="openScheduleDetails(attendanceDetails)" [disabled]="!this.schdeuleSubmit " > View Schedule </button>
+            <div id="videoContainer" *ngIf="this.timer > 0">
+
+              <video id="video" width="720" height="560" autoplay muted>
+              </video>
+            </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div> -->
+  
+
+   <!-- attendance Details modal -->
+
+   <div class="example-preview">
+    <div>
+      <ng-template #attendanceDetails let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <h4 class="modal-title"> </h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow:hidden">
+          <form #newUserForm="ngForm">
+
+
+         
+            <div class="detailsBodyContaier">
+
+
+
+
+
+
+
+
+                <div class="animated fadeIn">
+                    <!--/.row-->
+                    <div class="row">
+                      <div class="col-lg-12">
+                        
+                        <div class="card">
+                
+                          <div class="card-header">
+                
+                            <div class="headerContainer">
+                
+                                <div class="row">
+                                    
+                                    
+                                </div>
+                
+                            </div>
+                
+                          </div>
+                          <div class="card-body">
+                            <table class="table table-bordered table-striped table-sm">
+                              <thead>
+                                <tr>
+                                  <th>studentName</th>
+                                  <th>studentSurname</th>
+                                  <th>studentNumber</th>
+                                  <th>attended</th>
+                                  <th>Options</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                               <tr *ngFor="let attend of this.scheduleToSend.attendance">
+                                <td> {{attend.studentName}} </td>
+                                <td> {{attend.studentSurname}} </td>
+                                <td> {{attend.studentNumber}} </td>
+                                <td> 
+                                  <!-- {{attend.attended}}  -->
+                                  <i
+                                  [ngClass]="{
+                                    'fa fa-check-circle ': attend.attended,
+                                    'far fa-times-circle ': !attend.attended
+                                  }"
+                                  aria-hidden="true"
+                                ></i>
+                                </td>
+                                <td> 
+                                  <i class="fas fa-exchange-alt" (click)="toggleAttendance(attend)"></i>
+                                  <!-- <button (click)="toggleAttendance(attend)"> Change Attendance</button>  -->
+                                </td>
+                             
+                               </tr>
+                                
+                              </tbody>
+                            </table>
+
+
+                            <table class="table table-bordered table-striped table-sm"   id="excel-table" style="display: none;">
+                              <thead>
+                                <tr>
+                                  <th>studentName</th>
+                                  <th>studentSurname</th>
+                                  <th>studentNumber</th>
+                                  <th>attended</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                               <tr *ngFor="let attend of this.scheduleToSend.attendance">
+                                <td> {{attend.studentName}} </td>
+                                <td> {{attend.studentSurname}} </td>
+                                <td> {{attend.studentNumber}} </td>
+                                <td> {{ attend.attended}} </td>
+                             
+                               </tr>
+                                
+                              </tbody>
+                            </table>
+
+
+
+                          </div>
+                        </div>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                  </div>
+
+
+
+
+
+
+
+            </div>
+          
+  
+  
+  
+  
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+
+          <div class="alert-container">
+            <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+              <!-- Your changes have been submitted successfully -->
+              Attendance schedule has been added successfully
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+              Error Occured, please try again later
+            </div>
+          </div>
+          
+          <div class="row">
+          <button
+          style="margin: 7px;"
+            class="modalBtn"
+            type="button"
+            class="btn btn-outline-dark btnPadding"
+            (click)="c('Close click')"
+          >
+      Close
+          </button>
+          
+          <button
+          style="margin: 7px;"
+            class="modalBtn"
+            type="button"
+            class="btn btn-outline-dark btnPadding"
+            (click)="exportexcel()"
+          >
+          Export to Excel
+          </button>
+
+
+          <button
+          style="margin: 7px;"
+          class="modalBtn"
+          type="submit"
+            [disabled]="
+            modalSuccess || modalFailure
+            "
+            class="btn btn-outline-primary btnPadding"
+            (click)="this.saveSchedule()"
+          >
+            <span
+              class="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.isLoading"
+            ></span
+            >Save schedule
+          </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+  <!-- attendance Details modal -->
+
+  <div class="example-preview">
+    <div>
+      <ng-template #captureComp let-c="close" let-d="dismiss" class="example-preview">
+        <div class="modal-header">
+          <h4 class="modal-title"> </h4>
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            (click)="d('Cross click')"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow:hidden">
+
+          <picture>
+            
+          </picture>
+        </div>
+
+        <div class="modal-footer">
+
+          <div class="alert-container">
+            <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+              <!-- Your changes have been submitted successfully -->
+              Attendance schedule has been added successfully
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+              Error Occured, please try again later
+            </div>
+          </div>
+          
+          <div class="row">
+          <button
+          style="margin: 7px;"
+            class="modalBtn"
+            type="button"
+            class="btn btn-outline-dark btnPadding"
+            (click)="c('Close click')"
+          >
+      Close
+          </button>
+
+
+          
+          
+          
+          
+          <button
+          style="margin: 7px;"
+          class="modalBtn"
+          type="submit"
+            [disabled]="
+            modalSuccess || modalFailure
+            "
+            class="btn btn-outline-primary btnPadding"
+            (click)="this.saveSchedule()"
+          >
+            <span
+              class="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.isLoading"
+            ></span
+            >Save schedule
+          </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  

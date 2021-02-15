@@ -1,0 +1,412 @@
+<div class="animated fadeIn">
+    <!--/.row-->
+    <div class="row">
+      <div class="col-lg-12">
+        
+        <div class="card">
+          <!-- <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="this.openModal(new)">Add New Course</button> -->
+
+          <div class="card-header">
+          
+            <div class="headerContainer">
+
+              <div class="row">
+                <div class="col-md-4">
+
+                  <mat-form-field appearance="fill" class="searchField">
+                    <mat-label>
+                      Search
+                    </mat-label>
+                    <input
+                      matInput
+                      [(ngModel)]="this.searchQuery"
+                      type="text"
+                      name="searchQuery"
+                      (keyup)="this.runSearch($event.keyCode)"
+                      style="color:white; font-weight:bold"
+                    />
+                  </mat-form-field>
+
+                </div>
+
+                <div class="col-md-4">
+                  <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" (click)="applySearch()" > <i class="fas fa-search btnIcon" aria-hidden="true"></i>
+                    Search
+                  </button>
+                  
+                  
+                </div>
+
+                <div class="col-md-4">
+        <button type="button" class="btn btn-outline-primary btn-lg btn-block headerBtn" (click)="this.openModal(newCourse)">  <i class="fa fa-plus btnIcon" aria-hidden="true"></i>Add New Course</button>
+                </div>
+                  
+              </div>
+
+          </div>
+
+
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Course Code</th>
+                  <th>Course Name</th>
+                  <!-- <th>Staff ID</th> -->
+                  <th>Students Count</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+               <tr *ngFor="let course of this.CoursesList">
+                <td> {{course.courseCode}} </td>
+                <td> {{course.courseName}} </td>
+                <!-- <td> {{course.staffId}} </td> -->
+                <td> {{course.students.length}} </td>
+                <td> 
+                  <div ngbDropdown class="d-inline-block" placement="bottom-right">
+                  <button
+                    class="btn btn-outline-primary"
+                    id="dropdownBasic1"
+                    ngbDropdownToggle
+                  >
+                    {{"Options"  }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+           
+                     <button
+                      ngbDropdownItem
+                      (click)="this.openModal(updateCourse,course)"
+                    >
+                      <i class="far fa-edit fixed-width"></i> {{"Details"  }}
+                    </button>
+
+                    <button 
+                    ngbDropdownItem 
+                    (click)="this.openModal(delete,course)"
+                    >
+                      <i class="fas fa-trash-alt fixed-width"></i> {{"Delete"  }}
+                    </button>
+                  </div>
+                </div> 
+              </td>
+               </tr>
+
+                
+                
+              </tbody>
+            </table>
+           
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+  </div>
+  
+
+
+
+
+
+
+
+  
+
+<!-- new course modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #newCourse let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New Course</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #newCourseForm="ngForm">
+          <div class="row">
+         
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Course Code</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="courseCode"
+                    [(ngModel)]="this.modalObj.courseCode"
+                    name="courseCode"
+                    #courseCode="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="courseCode.invalid && courseCode.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+             
+              
+            </div>
+            
+            
+
+
+            <div class="col-xl-6">
+
+            
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label> Course Name</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="courseName"
+                    [(ngModel)]="this.modalObj.courseName"
+                    name="courseName"
+                    #courseName="ngModel"
+
+                    required
+                  />
+                  <mat-error *ngIf="courseName.invalid && courseName.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+             
+              
+            </div>
+            
+
+
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="newObjSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="newObjFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="newCourseForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="addNew()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+<!-- update course modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #updateCourse let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Course</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateCourseForm="ngForm">
+          <div class="row">
+         
+            <div class="col-xl-6">
+
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Course Code</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="courseCode"
+                    [(ngModel)]="this.modalObjUpdate.courseCode"
+                    name="courseCode"
+                    #courseCode="ngModel"
+                    required
+                  />
+                  <mat-error *ngIf="courseCode.invalid && courseCode.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+             
+              
+            </div>
+            
+            
+
+
+            <div class="col-xl-6">
+
+            
+              <div class="form-group">
+                <mat-form-field appearance="fill">
+                  <mat-label> Course Name</mat-label>
+                  <input
+                    matInput
+                    placeholder=""
+                    type="text"
+                    id="courseName"
+                    [(ngModel)]="this.modalObjUpdate.courseName"
+                    name="courseName"
+                    #courseName="ngModel"
+
+                    required
+                  />
+                  <mat-error *ngIf="courseName.invalid && courseName.touched"
+                    >Required field</mat-error
+                  >
+                </mat-form-field>
+              </div>
+             
+              
+            </div>
+            
+
+
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+           Your changes have been submitted successfully
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark btnPadding modalBtn"
+          (click)="c('Close click')"
+        >
+          Close
+        </button>
+      
+        
+        <button
+          type="submit"
+          [disabled]="updateCourseForm.invalid"
+          class="btn btn-outline-primary btnPadding modalBtn"
+          (click)="update()"
+          >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+      </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+<!-- delete Modal -->
+
+<div class="example-preview">
+  <div>
+    <ng-template #delete let-c="close" let-d="dismiss" class="example-preview">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Course : {{ modalTitle }}</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="d('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Are you sure you want to delete Course :
+        {{ this.modalTitle }}?
+      </div>
+      <div class="modal-footer">
+        <div class="alert-container">
+          <div class="alert alert-success" role="alert" *ngIf="modalSuccess">
+           Your changes have been submitted successfully.
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="modalFailure">
+            An error occured. Please try again later.
+          </div>
+        </div>
+        <div class="row">
+        <button
+          type="button"
+          class="btn btn-outline-dark modalBtn"
+          (click)="c('Close click')"
+        >
+      Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-outline-primary modalBtn"
+          (click)="update(true)"
+        >
+          <span
+            class="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+            *ngIf="this.isLoading"
+          ></span
+          >Submit Changes
+        </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
