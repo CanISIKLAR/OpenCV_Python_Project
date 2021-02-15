@@ -2,7 +2,7 @@
 
  For Back-end Asp.Net used. Front-end designed by Angular frame work.
  
- To run this project: first of all, we need to download Node.js in our computer. We have 2 diffrent files which is API and Face-Recognition-Attendance.
+ To run this project: First of all, we need to download Node.js in our computer. We have 2 diffrent files which is API and Face-Recognition-Attendance.
  
  Step one:
  
