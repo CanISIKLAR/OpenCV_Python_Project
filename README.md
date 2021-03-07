@@ -27,4 +27,10 @@
  Use your browser write localhost:4200
  
  If not try localhost:5001
+ 
+![WhatsApp Image 2021-03-07 at 18 20 29](https://user-images.githubusercontent.com/61684825/110246996-98b61080-7f72-11eb-8802-e58794388713.jpeg)
+![WhatsApp Image 2021-03-07 at 18 20 29 (6)](https://user-images.githubusercontent.com/61684825/110247011-a370a580-7f72-11eb-9236-1ea22df8cec8.jpeg)
+![WhatsApp Image 2021-03-07 at 18 20 29 (3)](https://user-images.githubusercontent.com/61684825/110247017-a9ff1d00-7f72-11eb-9f86-bb522b08970c.jpeg)
+![WhatsApp Image 2021-03-07 at 18 20 29 (1)](https://user-images.githubusercontent.com/61684825/110247020-b1262b00-7f72-11eb-820d-6ee3c7398e63.jpeg)
+![WhatsApp Image 2021-03-07 at 18 20 29 (2)](https://user-images.githubusercontent.com/61684825/110247026-b71c0c00-7f72-11eb-986a-3d88200261b2.jpeg)
 
